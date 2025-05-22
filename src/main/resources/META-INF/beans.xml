@@ -1,0 +1,12 @@
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="
+         https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"
+	   version="4.0">
+</beans>
+<!--
+	Este archivo es necesario para que el contenedor CDI (Contextos e Inyección de Dependencias) pueda detectar las
+	 clases que tienen anotaciones de CDI. En este caso, no se necesita ninguna configuración adicional, ya que todas
+	 las clases que tienen anotaciones de CDI se detectarán automáticamente.
+-->
