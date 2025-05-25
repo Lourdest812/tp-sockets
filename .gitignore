@@ -56,3 +56,15 @@ Thumbs.db
 *.suo
 *.userosscache
 *.sln.docstates
+
+# C/C++
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+*.c~
+*.h~
