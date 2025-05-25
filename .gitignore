@@ -1,0 +1,58 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Build directories
+target/
+bin/
+
+# IDEs and editors
+/.classpath
+/.project
+/.settings/
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Misc
+*.swp
+*.swo
+
+# Maven
+/logs/
+/.mvn/
+
+# VSCode
+.vscode/
+
+# Windows
+*.exe
+*.dll
+*.bat
+*.cmd
+
+# Mac
+.AppleDouble
+.LSOverride
+
+# Others
+*.tmp
+*.bak
+*.old
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
