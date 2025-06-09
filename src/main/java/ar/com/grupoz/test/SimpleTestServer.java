@@ -22,41 +22,42 @@ public class SimpleTestServer {
                      BufferedReader entrada = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                      PrintWriter salida = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
-                    String linea;
-                    // Lee los mensajes que envía el cliente
-                    while ((linea = entrada.readLine()) != null) {
-                        System.out.println("Recibido: " + linea);
+					String linea;
+					// Lee los mensajes que envía el cliente
+					while ((linea = entrada.readLine()) != null) {
+						try {
+							System.out.println("Recibido: " + linea);
 
-                        // Espera mensajes en formato COMANDO:valor (por ejemplo, USERNAME:LourdesToledo)
-                        String[] partes = linea.split(":", 2);
-                        if (partes.length != 2) {
-                            salida.println("false:Comando inválido");
-                            continue;
-                        }
-                        String comando = partes[0];
-                        String valor = partes[1];
+							// Espera mensajes en formato COMANDO:valor (por ejemplo, USERNAME:LourdesToledo)
+							String[] partes = linea.split(":", 2);
+							if (partes.length != 2) {
+								salida.println("false:Comando inválido");
+								continue;
+							}
+							String comando = partes[0];
+							String valor = partes[1];
 
-                        // Si el comando es USERNAME, intenta generar un nombre de usuario válido
-                        if (comando.equals("USERNAME")) {
-                            String username = generarUsername(valor);
-                            if (username == null) {
-                                salida.println("false:No se pudo generar un nombre de usuario válido");
-                            } else {
-                                salida.println("true:" + username);
-                            }
-                        // Si el comando es EMAIL, intenta generar un correo válido
-                        } else if (comando.equals("EMAIL")) {
-                            String email = generarEmail(valor);
-                            if (email == null) {
-                                salida.println("false:No se pudo generar un correo válido");
-                            } else {
-                                salida.println("true:" + email);
-                            }
-                        // Si el comando no es reconocido, responde con error
-                        } else {
-                            salida.println("false:Comando desconocido");
-                        }
-                    }
+							// Si el comando es USERNAME, intenta generar un nombre de usuario válido
+							if (comando.equals("USERNAME")) {
+								String username = generarUsername(valor);
+								salida.println("true:" + username);
+								// Si el comando es EMAIL, intenta generar un correo válido
+							} else if (comando.equals("EMAIL")) {
+								String email = generarEmail(valor);
+								salida.println("true:" + email);
+								// Si el comando no es reconocido, responde con error
+							} else {
+								salida.println("false:Comando desconocido");
+							}
+						} catch (IllegalArgumentException e) {
+							// Maneja errores de validación de entrada
+							System.err.println("Error de validación: " + e.getMessage());
+							salida.println("false:" + e.getMessage());
+						}
+					}
+				} catch (SocketException e) {
+					// Maneja desconexiones inesperadas
+					System.err.println("Cliente desconectado: " + e.getMessage());
                 } catch (IOException e) {
                     System.err.println("Error en la conexión: " + e.getMessage());
                 }
@@ -70,18 +71,18 @@ public class SimpleTestServer {
     // Genera un nombre de usuario válido a partir de un nombre y apellido
     // Debe tener entre 5 y 20 letras, al menos una vocal y una consonante, y solo letras
     private static String generarUsername(String nombreApellido) {
-        String limpio = nombreApellido.replaceAll("[^a-zA-Z]", "").toLowerCase();
-        if (limpio.length() < 5 || limpio.length() > 20) return null;
-        if (!limpio.matches(".*[aeiou].*") || !limpio.matches(".*[bcdfghjklmnpqrstvwxyz].*")) return null;
+        String limpio = nombreApellido.toLowerCase();
+        if (limpio.length() < 5 || limpio.length() > 20) throw new IllegalArgumentException("El nombre de usuario debe tener entre 5 y 20 letras.");
+        if (!limpio.matches(".*[aeiou].*") || !limpio.matches(".*[bcdfghjklmnpqrstvwxyz].*")) throw new IllegalArgumentException("El nombre de usuario debe contener al menos una vocal y una consonante y sin números.");
         return limpio;
     }
 
     // Genera un correo electrónico válido usando el username y un dominio permitido
     private static String generarEmail(String username) {
         String[] dominios = {"@gmail.com", "@hotmail.com"};
-        String user = username.replaceAll("[^a-zA-Z]", "").toLowerCase();
-        if (user.length() < 5 || user.length() > 20) return null;
-        if (!user.matches(".*[aeiou].*") || !user.matches(".*[bcdfghjklmnpqrstvwxyz].*")) return null;
+        String user = username.toLowerCase();
+        if (user.length() < 5 || user.length() > 20) throw new IllegalArgumentException("El nombre de usuario debe tener entre 5 y 20 letras.");
+        if (!user.matches(".*[aeiou].*") || !user.matches(".*[bcdfghjklmnpqrstvwxyz].*")) throw new IllegalArgumentException("El nombre de usuario debe contener al menos una vocal y una consonante y sin números.");
         // Selecciona un dominio válido aleatorio
         String dominio = dominios[(int)(Math.random() * dominios.length)];
         String email = user + dominio;
