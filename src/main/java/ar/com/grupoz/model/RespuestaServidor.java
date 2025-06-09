@@ -1,7 +1,19 @@
 package ar.com.grupoz.model;
 
+/**
+ * Representa la respuesta enviada por el servidor tras ejecutar un comando.
+ * Contiene un indicador booleano que señala si la operación fue aceptada
+ * y un mensaje adicional con información o detalles del resultado.
+ */
 public class RespuestaServidor {
-	private boolean aceptado;
+	/**
+	 * Indica si el servidor aceptó o no el comando enviado.
+	 * {@code true} si fue aceptado; {@code false} en caso contrario.
+	 */	private boolean aceptado;
+
+	/**
+	 * Mensaje devuelto por el servidor, puede ser informativo o de error.
+	 */
 	private String mensaje;
 
 	public RespuestaServidor() {}
