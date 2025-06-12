@@ -71,24 +71,32 @@ public class SimpleTestServer {
     // Genera un nombre de usuario válido a partir de un nombre y apellido
     // Debe tener entre 5 y 20 letras, al menos una vocal y una consonante, y solo letras
     private static String generarUsername(String nombreApellido) {
-        String limpio = nombreApellido.toLowerCase();
-        if (limpio.length() < 5 || limpio.length() > 20) throw new IllegalArgumentException("El nombre de usuario debe tener entre 5 y 20 letras.");
-        if (!limpio.matches(".*[aeiou].*") || !limpio.matches(".*[bcdfghjklmnpqrstvwxyz].*")) throw new IllegalArgumentException("El nombre de usuario debe contener al menos una vocal y una consonante y sin números.");
-        return limpio;
-    }
+		return validarYFormatearUsername(nombreApellido);
+	}
 
     // Genera un correo electrónico válido usando el username y un dominio permitido
     private static String generarEmail(String username) {
         String[] dominios = {"@gmail.com", "@hotmail.com"};
-        String user = username.toLowerCase();
-        if (user.length() < 5 || user.length() > 20) throw new IllegalArgumentException("El nombre de usuario debe tener entre 5 y 20 letras.");
-        if (!user.matches(".*[aeiou].*") || !user.matches(".*[bcdfghjklmnpqrstvwxyz].*")) throw new IllegalArgumentException("El nombre de usuario debe contener al menos una vocal y una consonante y sin números.");
+        String user = validarYFormatearUsername(username);
         // Selecciona un dominio válido aleatorio
         String dominio = dominios[(int)(Math.random() * dominios.length)];
         String email = user + dominio;
         if (validarEmail(email)) return email;
         return null;
     }
+
+	// Realiza las validaciones de nombre de usuario y retorna el nombre formateado (con solo vocales y consonantes)
+	private static String validarYFormatearUsername(String username){
+		String usernameLowerCase = username.toLowerCase();
+		if (!usernameLowerCase.matches("(?=.*[aeiou])(?=.*[bcdfghjklmnpqrstvwxyz]).+"))
+			throw new IllegalArgumentException("El nombre de usuario debe contener al menos una vocal y una consonante");
+		if (usernameLowerCase.matches(".*\\d.*"))
+			throw new IllegalArgumentException("El nombre de usuario no puede contener números");
+		String limpio = usernameLowerCase.replaceAll("[^a-zA-Z]", "").toLowerCase();
+		if (limpio.length() < 5 || limpio.length() > 20)
+			throw new IllegalArgumentException("El nombre de usuario debe tener entre 5 y 20 letras.");
+		return limpio;
+	}
 
     // Valida que el correo tenga el formato correcto y un dominio permitido
     private static boolean validarEmail(String email) {
