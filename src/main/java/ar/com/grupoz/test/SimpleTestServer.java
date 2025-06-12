@@ -71,22 +71,25 @@ public class SimpleTestServer {
     // Genera un nombre de usuario válido a partir de un nombre y apellido
     // Debe tener entre 5 y 20 letras, al menos una vocal y una consonante, y solo letras
     private static String generarUsername(String nombreApellido) {
-		return validarYFormatearUsername(nombreApellido);
+		validarUsername(nombreApellido);
+		return nombreApellido.replaceAll("[^a-zA-Z]", "").toLowerCase();
 	}
 
     // Genera un correo electrónico válido usando el username y un dominio permitido
     private static String generarEmail(String username) {
         String[] dominios = {"@gmail.com", "@hotmail.com"};
-        String user = validarYFormatearUsername(username);
+		String user = username.toLowerCase();
+		validarUsername(user);
         // Selecciona un dominio válido aleatorio
         String dominio = dominios[(int)(Math.random() * dominios.length)];
         String email = user + dominio;
-        if (validarEmail(email)) return email;
-        return null;
+        if (!validarEmail(email))
+			throw new IllegalArgumentException("El formato para email no es válido.");
+        return email;
     }
 
-	// Realiza las validaciones de nombre de usuario y retorna el nombre formateado (con solo vocales y consonantes)
-	private static String validarYFormatearUsername(String username){
+	// Realiza las validaciones de nombre de usuario
+	private static void validarUsername(String username){
 		String usernameLowerCase = username.toLowerCase();
 		if (!usernameLowerCase.matches("(?=.*[aeiou])(?=.*[bcdfghjklmnpqrstvwxyz]).+"))
 			throw new IllegalArgumentException("El nombre de usuario debe contener al menos una vocal y una consonante");
@@ -95,7 +98,6 @@ public class SimpleTestServer {
 		String limpio = usernameLowerCase.replaceAll("[^a-zA-Z]", "").toLowerCase();
 		if (limpio.length() < 5 || limpio.length() > 20)
 			throw new IllegalArgumentException("El nombre de usuario debe tener entre 5 y 20 letras.");
-		return limpio;
 	}
 
     // Valida que el correo tenga el formato correcto y un dominio permitido
