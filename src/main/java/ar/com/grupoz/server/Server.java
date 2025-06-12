@@ -1,4 +1,4 @@
-package ar.com.grupoz.test;
+package ar.com.grupoz.server;
 
 import java.io.*;
 import java.net.*;
@@ -8,7 +8,7 @@ import java.net.*;
  * Recibe comandos de clientes (en formato TEXTO) para generar nombres de usuario y correos electrónicos válidos.
  * Puede ser probado con clientes en cualquier lenguaje (Java, Python, C, etc.).
  */
-public class SimpleTestServer {
+public class Server {
     public static void main(String[] args) throws IOException {
         // Crea el servidor y lo deja escuchando en el puerto 1234
         ServerSocket serverSocket = new ServerSocket(1234);

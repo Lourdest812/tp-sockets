@@ -7,7 +7,7 @@ PORT = 1234
    # Crea el Usuario a partir de los datos ingresados por teclado
 
 def crear_usuario(s):
-    usuario = input('Ingrese el nombre de usuario: ')
+    usuario = input('Ingrese nombre y apellido: ')
     s.sendall(f'USERNAME:{usuario}\n'.encode())
     print('Respuesta:', s.recv(1024).decode())
 

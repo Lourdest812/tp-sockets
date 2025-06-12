@@ -1,6 +1,5 @@
-package ar.com.grupoz.test;
+package ar.com.grupoz.clients;
 
-import ar.com.grupoz.clients.ClienteSocket;
 import ar.com.grupoz.model.RespuestaServidor;
 
 public class ClienteSocketTest {

@@ -35,8 +35,10 @@ public class ClienteSocket {
 	 */
 	public void conectar() throws IOException {
 		socket = new Socket(SERVER_IP, SERVER_PORT);
-		salida = new PrintWriter(socket.getOutputStream(), true);
+		salida = new PrintWriter(socket.getOutputStream(), true);//autoFlush=true (se manda al instante)
+		//PrintWriter toma texto plano y lo convierte a bytes
 		entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		//InputStreamReader toma bytes y lo convierte a texto plano
 	}
 
 	/**
